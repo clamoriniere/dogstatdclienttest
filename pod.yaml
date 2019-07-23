@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dogstatdclienttest
+  labels:
+    name: dogstatdclienttest
+spec:
+  volumes:
+  - hostPath:
+      path: /var/run/datadog/
+      type: ""
+    name: dsdsocket
+  serviceAccount: datadog
+  serviceAccountName: datadog
+  containers:
+  - name: myapp
+    image: datadog/dogstatdclienttest
+    imagePullPolicy: Always
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "10m"
+    volumeMounts:
+    - mountPath: /var/run/datadog
+      name: dsdsocket
+      readOnly: true
+
